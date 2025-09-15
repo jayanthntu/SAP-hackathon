@@ -1,0 +1,94 @@
+---
+map_professional_network:
+  description: 'Analyze {employee_name}''s current professional network within {company_name}
+    by examining organizational charts, project collaborations, communication patterns,
+    and existing relationships. Create a comprehensive network map identifying: 1)
+    Current connections and their influence levels, 2) Network gaps in key departments
+    or seniority levels, 3) High-impact individuals not yet connected to, 4) Relationship
+    strength assessment, and 5) Strategic networking priorities for career advancement
+    in {target_role}'
+  expected_output: A detailed network analysis report in markdown format with visual
+    network mapping recommendations, including current connections matrix, identified
+    network gaps, high-priority connection targets, and a strategic networking roadmap
+    tailored to {employee_name}'s career goals
+  agent: network_analyzer
+identify_networking_events:
+  description: 'Scan {company_name}''s calendar and event systems to identify upcoming
+    networking opportunities including: 1) Company-wide events, training sessions,
+    and workshops, 2) Team lunches, happy hours, and informal gatherings, 3) Department
+    meetings and cross-functional collaborations, 4) External events that company
+    employees typically attend. For each event, identify which recommended connections
+    or other strategic contacts will likely attend, and suggest specific people to
+    approach and conversation topics relevant to each event''s context'
+  expected_output: A comprehensive networking events calendar with detailed event
+    information, expected attendees from the recommended connections list, strategic
+    networking goals for each event, suggested people to approach, and event-specific
+    conversation starters and networking tactics
+  agent: event_scout
+  context:
+  - map_professional_network
+recommend_priority_connection:
+  description: Based on the network analysis, identify and recommend 8-12 strategic
+    colleagues for {employee_name} to connect with, focusing on colleagues with shared
+    {interests}, potential mentors for {target_role}, cross-functional partners, and
+    senior leaders. After creating the comprehensive list, select the single highest-priority
+    connection who offers the best combination of career impact, accessibility, and
+    alignment with {career_goals}. Provide detailed rationale for the priority selection
+    including specific collaboration opportunities and conversation approaches. If
+    meeting fails with the first 8-12 connections, look for another 8-12 connections
+  expected_output: A comprehensive list of 8-12 strategic connection recommendations
+    with detailed profiles and rationale, followed by the selection of ONE priority
+    connection with specific justification, suggested meeting approach, conversation
+    starters, and expected outcomes from the connection
+  agent: strategic_connection_advisor
+  context:
+  - map_professional_network
+  - identify_networking_events
+coordinate_initial_outreach:
+  description: 'Facilitate the initial connection process for {employee_name} by:
+    1) Checking calendar availability for {employee_name} using Google Calendar, 2)
+    Drafting personalized outreach emails for each recommended connection, 3) Suggesting
+    optimal meeting times and formats (coffee chat, lunch, virtual meeting), 4) Providing
+    pre-meeting conversation hooks and talking points based on the researched profiles,
+    and 5) Preparing the groundwork for meeting coordination'
+  expected_output: Initial coordination package including personalized email drafts
+    for each connection, {employee_name}'s availability windows, suggested meeting
+    formats, conversation guide with talking points, and preparation materials for
+    the connection phase
+  agent: meeting_coordinator
+  context:
+  - recommend_priority_connection
+finalize_meeting_coordination:
+  description: 'Complete the connection process for {employee_name} by: 1) Checking
+    calendar availability for a period of 1 month for the recommended connections
+    using Google Calendar, 2) Cross-referencing availability with {employee_name}''s
+    schedule from the initial outreach, 3) Finalizing optimal meeting times that work
+    for both parties, 4) Creating calendar invites for confirmed meetings, 5) Sending
+    finalized outreach emails with specific meeting proposals, and 6) Providing follow-up
+    recommendations for maintaining relationships post-meeting'
+  expected_output: Complete meeting coordination package including confirmed meeting
+    times, sent calendar invites, finalized email communications, mutual availability
+    confirmations, and comprehensive follow-up strategy for maintaining the new professional
+    relationships
+  agent: meeting_coordinator_2
+  context:
+  - coordinate_initial_outreach
+generate_meeting_conversation_starters:
+  description: 'Research the selected meeting contact from the finalized coordination
+    and create personalized conversation starters for {employee_name}''s upcoming
+    networking meeting. Focus on: 1) Researching the contact''s recent projects, achievements,
+    and professional interests, 2) Identifying shared connections, experiences, or
+    interests between {employee_name} and the contact, 3) Creating 5-7 natural conversation
+    openers that feel authentic and engaging, 4) Developing follow-up questions that
+    can deepen the conversation, 5) Suggesting ways to showcase {employee_name}''s
+    expertise and {interests} during the conversation, and 6) Preparing graceful conversation
+    transitions and meeting wrap-up approaches 7) generate conversation starters based
+    on the person''s background, hobbies, interests.'
+  expected_output: A comprehensive conversation preparation guide including personalized
+    ice breakers, research insights about the contact, shared connection points, strategic
+    talking points about {employee_name}'s {career_goals}, natural conversation flow
+    suggestions, and professional follow-up conversation closers to ensure a memorable
+    and impactful networking meeting
+  agent: conversation_starter_generator
+  context:
+  - finalize_meeting_coordination
